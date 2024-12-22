@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
-import { ClipboardList } from 'lucide-react';
-import { findStudentResults } from '../db/results';
-import ResultForm from './common/ResultForm';
-import ResultDisplay from './common/ResultDisplay';
+import React, { useState } from "react";
+import { ClipboardList, LogOut } from "lucide-react";
+import { findStudentResults } from "../db/results";
+import ResultForm from "./common/ResultForm";
+import ResultDisplay from "./common/ResultDisplay";
+import { useNavigate } from "react-router-dom";
 
 export default function ViewResult() {
-  const [universityId, setUniversityId] = useState('');
-  const [mothersName, setMothersName] = useState('');
-  const [selectedClass, setSelectedClass] = useState('');
-  const [selectedDiv, setSelectedDiv] = useState('');
+  const [universityId, setUniversityId] = useState("");
+  const [mothersName, setMothersName] = useState("");
+  const [selectedClass, setSelectedClass] = useState("");
+  const [selectedDiv, setSelectedDiv] = useState("");
   const [results, setResults] = useState<any[]>([]);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,18 +25,32 @@ export default function ViewResult() {
 
       if (studentResults.length > 0) {
         setResults(studentResults);
-        setError('');
+        setError("");
       } else {
-        setError('No results found. Please check your details.');
+        setError("No results found. Please check your details.");
         setResults([]);
       }
     } catch (err) {
-      setError('An error occurred. Please try again.');
+      setError("An error occurred. Please try again.");
     }
+  };
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    navigate("/");
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+      <div className=" float-right">
+        <button
+          onClick={handleLogout}
+          className="flex items-center px-4 py-2 text-white bg-red-600 rounded-md hover:bg-red-700 transition-colors"
+        >
+          <LogOut className="w-4 h-4 mr-2" />
+          Home Screen
+        </button>
+      </div>
       <div className="max-w-4xl mx-auto">
         <div className="bg-white rounded-lg shadow-lg p-8">
           <div className="text-center mb-8">
